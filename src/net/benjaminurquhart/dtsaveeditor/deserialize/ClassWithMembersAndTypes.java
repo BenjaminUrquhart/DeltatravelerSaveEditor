@@ -236,8 +236,24 @@ public class ClassWithMembersAndTypes extends Record {
 		return (T)inst;
 	}
 	
-	private Object[] convertToPrimitiveArray(ArraySinglePrimitive arr) {
-		Object[] out = null;
+	private Object convertToPrimitiveArray(ArraySinglePrimitive arr) {
+		Object out = null;
+		
+		Object[] values = arr.getValues();
+		//System.out.println(arr.primitiveType + " " + Arrays.deepToString(values));
+		
+		// I too enjoy Java
+		// TODO: More types, just so happens that Deltatraveler only uses Int32
+		switch(arr.primitiveType) {
+		case Int32:
+			int[] a = new int[arr.length];
+			for(int i = 0; i < arr.length; i++) {
+				a[i] = (int)values[i];
+			}
+			out = a;
+			break;
+		default: throw new UnsupportedOperationException("no ArraySinglePrimitive type mapping exists for PrimitiveType " + arr.primitiveType);
+		}
 		
 		return out;
 	}
