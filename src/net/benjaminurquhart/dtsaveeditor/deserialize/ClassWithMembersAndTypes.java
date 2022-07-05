@@ -2,7 +2,7 @@ package net.benjaminurquhart.dtsaveeditor.deserialize;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
+import java.util.ArrayList;	
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -269,7 +269,7 @@ public class ClassWithMembersAndTypes extends Record {
 		sb.append(classInfo.name);
 		sb.append(" (id ");
 		sb.append(classInfo.objectId);
-		sb.append(") {\n");
+		sb.append(String.format(") @ 0x%08x {\n", offset));
 		
 		String tmp;
 		String name;

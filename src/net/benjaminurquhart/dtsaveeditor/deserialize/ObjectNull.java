@@ -16,6 +16,6 @@ public class ObjectNull extends Record {
 	
 	@Override
 	public String toString() {
-		return repeats > 1 ? "ObjectNull x " + repeats : "ObjectNull";
+		return (repeats > 1 ? "ObjectNull x " + repeats : "ObjectNull") + String.format(" @ 0x%08x", offset);
 	}
 }

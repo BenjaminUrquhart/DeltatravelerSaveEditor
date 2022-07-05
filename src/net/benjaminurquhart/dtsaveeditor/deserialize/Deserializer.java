@@ -91,9 +91,12 @@ public class Deserializer {
 		}
 		
 		public Record readRecord() {
+			int offset = buff.position();
 			Record record = this.readRecordInternal();
 			if(record != null) {
 				records.add(record);
+				record.offset = offset;
+				//System.out.println(record);
 			}
 			return record;
 		}

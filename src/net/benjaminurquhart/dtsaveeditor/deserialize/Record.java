@@ -7,6 +7,7 @@ import java.util.Map;
 public abstract class Record {
 
 	public final Deserializer.RecordType type;
+	public int offset = -1;
 	
 	public Record() {
 		if(this.getClass().isAnnotationPresent(RecordType.class)) {
@@ -41,7 +42,7 @@ public abstract class Record {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(type.name());
-		sb.append(" [");
+		sb.append(String.format(" @ 0x%08x [", offset));
 		
 		boolean space = false;
 		for(Field field : this.getClass().getDeclaredFields()) {

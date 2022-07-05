@@ -24,7 +24,7 @@ public class Main {
 			return out;
 		});
 		
-		StreamHeader root = Deserializer.deserialize(new File("SAVE2.sav")); // Load the save
+		StreamHeader root = Deserializer.deserialize(new File("SAVE0.sav")); // Load the save
 		SAVEFile save = root.getRootObject(SAVEFile.class);                  // Convert to Java object
 		System.out.println(save);
 	}

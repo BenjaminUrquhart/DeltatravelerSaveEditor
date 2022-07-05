@@ -72,10 +72,31 @@ public class SAVEFile {
 		sb.append(exp);
 		sb.append("\n\tDeaths: ");
 		sb.append(deaths);
+		sb.append("\n\tEquipped Weapons: [");
+		for(int i = 0; i < weapon.length; i++) {
+			sb.append(itemNames[weapon[i]]);
+			sb.append(" (");
+			sb.append(weapon[i]);
+			sb.append(')');
+			if(i < weapon.length - 1) sb.append(", ");
+		}
+		sb.append(']');
+		sb.append("\n\tEquipped Armor:   [");
+		for(int i = 0; i < armor.length; i++) {
+			sb.append(itemNames[armor[i]]);
+			sb.append(" (");
+			sb.append(armor[i]);
+			sb.append(')');
+			if(i < armor.length - 1) sb.append(", ");
+		}
+		sb.append(']');
 		sb.append("\n\tInventory:");
 		for(int item : items) {
 			sb.append("\n\t - ");
 			sb.append(itemNames[item]);
+			sb.append(" (");
+			sb.append(item);
+			sb.append(')');
 		}
 		return sb.toString();
 	}
