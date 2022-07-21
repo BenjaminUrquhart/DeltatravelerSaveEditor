@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+    id 'application'
+    id "com.github.johnrengelman.shadow" version "5.2.0"
+}
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.nanohttpd', name: 'nanohttpd', version: '2.3.1'
+    compile group: 'org.nanohttpd', name: 'nanohttpd-nanolets', version: '2.3.1'
+    
+}
+sourceSets {
+    main.java.srcDirs = ['src/']
+    main.resources.srcDirs = ['src/']
+}
+sourceCompatibility = '1.11'
+targetCompatibility = '1.11'
+
+mainClassName='net.benjaminurquhart.dtsaveeditor.Main'

@@ -33,7 +33,7 @@ public class Serializer {
 				fieldType = field.getType();
 				obj = field.get(object);
 				if(fieldType.isPrimitive() || Number.class.isAssignableFrom(fieldType)) {
-					out.add(new BinaryMember(BinaryType.Primitive, "TODO"));
+					out.add(new BinaryMember(BinaryType.Primitive, obj));
 					//throw new UnsupportedOperationException("TODO: Primitive types");
 				}
 				else if(fieldType == String.class) {
@@ -44,11 +44,10 @@ public class Serializer {
 						out.add(new BinaryMember(BinaryType.StringArray, obj));
 					}
 					else if(Object[].class.isAssignableFrom(fieldType)) {
-						out.add(new BinaryMember(BinaryType.ObjectArray, obj));
+						out.add(new BinaryMember(BinaryType.ObjectArray, processElements((Object[])obj)));
 					}
 					else {
-						out.add(new BinaryMember(BinaryType.PrimitiveArray, "TODO"));
-						//throw new UnsupportedOperationException("TODO: Primitive arrays");
+						out.add(new BinaryMember(BinaryType.PrimitiveArray, obj));
 					}
 				}
 				else if(obj == null) {
@@ -69,6 +68,37 @@ public class Serializer {
 			throw new RuntimeException(e);
 		}
 		
+		return out;
+	}
+	
+	private static Object[] processElements(Object[] arr) {
+		Object obj;
+		Object[] out = arr;
+		boolean dirty = false, created = false;
+		for(int i = 0; i < arr.length; i++) {
+			obj = out[i];
+			
+			while(obj instanceof MemberReference) {
+				obj = ((MemberReference)obj).getReference();
+				dirty = true;
+			}
+			if((obj instanceof BinaryObject) && ((BinaryObject)obj).type == RecordType.BinaryObjectString) {
+				obj = ((BinaryObject)obj).value;
+				dirty = true;
+			}
+			else if(obj instanceof MemberPrimitiveTyped) {
+				obj = ((MemberPrimitiveTyped)obj).value;
+				dirty = true;
+			}
+			if(dirty) {
+				if(!created) {
+					out = arr.clone();
+					created = true;
+				}
+				out[i] = obj;
+				dirty = false;
+			}
+		}
 		return out;
 	}
 }

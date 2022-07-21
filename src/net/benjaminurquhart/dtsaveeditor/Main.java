@@ -30,6 +30,8 @@ public class Main {
 		ObjectMapper.setJavaObjectMapping("System.Collections.Generic.List", List.class, (list, fields) -> {
 			fields.put("_size", list.size());
 			fields.put("_items", list.toArray());
+			
+			fields.put("_version", 0);
 		});
 		
 		StreamHeader root = Deserializer.deserialize(new File("SAVE1.sav"));
