@@ -1,10 +1,15 @@
 package net.benjaminurquhart.dtsaveeditor;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+
+import net.benjaminurquhart.dtsaveeditor.file.Deserializer;
+import net.benjaminurquhart.dtsaveeditor.file.StreamHeader;
 
 public class SAVEFile {
 	
-	  private static String[] itemNames = 
+	  public static final String[] itemNames = 
 			  {
 			    "Test Food",
 			    "Test Knife",
@@ -40,6 +45,15 @@ public class SAVEFile {
 			    "Aluminum Bat",
 			    "Tough Glove"
 			  };
+	  
+	 
+	public static SAVEFile from(File file) throws InstantiationException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, IOException {		
+		return from(Deserializer.deserialize(file));
+	}
+	
+	public static SAVEFile from(StreamHeader header) throws InstantiationException, NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+		return header.getRootObject(SAVEFile.class);
+	}
 
 	public String name;
 	public int exp;
@@ -93,7 +107,7 @@ public class SAVEFile {
 		sb.append("\n\tInventory:");
 		for(int item : items) {
 			sb.append("\n\t - ");
-			sb.append(itemNames[item]);
+			sb.append(item < 0 || item >= itemNames.length ? "INVALID" : itemNames[item]);
 			sb.append(" (");
 			sb.append(item);
 			sb.append(')');
