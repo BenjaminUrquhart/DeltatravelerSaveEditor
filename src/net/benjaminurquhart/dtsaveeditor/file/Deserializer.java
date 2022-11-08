@@ -117,12 +117,6 @@ public class Deserializer {
 		}
 		
 		public BinaryObject readBinaryObject() {
-			BinaryObject obj = this.readBinaryObjectInternal();
-			records.add(obj);
-			return obj;
-		}
-		
-		private BinaryObject readBinaryObjectInternal() {
 			return (BinaryObject) this.readRecord();
 		}
 		

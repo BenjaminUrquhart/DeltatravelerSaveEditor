@@ -1,5 +1,6 @@
 package net.benjaminurquhart.dtsaveeditor.file;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;	
@@ -236,22 +237,35 @@ public class ClassWithMembersAndTypes extends Record {
 	}
 	
 	private Object convertToPrimitiveArray(ArraySinglePrimitive arr) {
+		
+		// I found out how to dynamically create arrays of any type.
+		// I must now apologize for what shall follow.
+		
 		Object out = null;
 		
 		Object[] values = arr.getValues();
-		//System.out.println(arr.primitiveType + " " + Arrays.deepToString(values));
-		
-		// I too enjoy Java
-		// TODO: More types, just so happens that Deltatraveler only uses Int32
+		Class<?> clazz = null;
+
 		switch(arr.primitiveType) {
-		case Int32:
-			int[] a = new int[arr.length];
-			for(int i = 0; i < arr.length; i++) {
-				a[i] = (int)values[i];
-			}
-			out = a;
-			break;
+		case Boolean: clazz = boolean.class; break;
+		case Byte:    clazz = byte.class;    break;
+		case Char:    clazz = char.class;    break;
+		case Int16:   clazz = short.class;   break;
+		case Int32:   clazz = int.class;     break;
+		case Int64:   clazz = long.class;    break;
+		case UInt16:  clazz = int.class;     break;
+		case UInt32:  clazz = long.class;    break;
+		
+		case Single:  clazz = float.class;   break;
+		case Double:  clazz = double.class;  break;
+		
 		default: throw new UnsupportedOperationException("no ArraySinglePrimitive type mapping exists for PrimitiveType " + arr.primitiveType);
+		}
+		
+		out = Array.newInstance(clazz, values.length);
+		
+		for(int i = 0; i < values.length; i++) {
+			Array.set(out, i, values[i]);
 		}
 		
 		return out;
