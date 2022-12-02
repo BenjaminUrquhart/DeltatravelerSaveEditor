@@ -2,8 +2,6 @@ package net.benjaminurquhart.dtsaveeditor.file;
 
 import java.util.Map;
 
-import net.benjaminurquhart.dtsaveeditor.file.Deserializer.Reader;
-
 public abstract class ArraySingle extends Record {
 
 	public final int id, length;
@@ -17,6 +15,11 @@ public abstract class ArraySingle extends Record {
 	
 	protected void preProcess(Map<Integer, Record> objects) {
 		objects.put(id, this);
+	}
+	
+	protected void serializeInternal(Writer writer) {
+		writer.writeInt(id)
+			  .writeInt(length);
 	}
 	
 	public abstract Object[] getValues();

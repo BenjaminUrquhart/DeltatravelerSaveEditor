@@ -1,7 +1,5 @@
 package net.benjaminurquhart.dtsaveeditor.file;
 
-import net.benjaminurquhart.dtsaveeditor.file.Deserializer.Reader;
-
 public class ArraySinglePrimitive extends ArraySingle {
 	
 	public final PrimitiveType primitiveType;
@@ -21,5 +19,14 @@ public class ArraySinglePrimitive extends ArraySingle {
 	@Override
 	public Object[] getValues() {
 		return values;
+	}
+	
+	@Override
+	protected void serializeInternal(Writer writer) {
+		super.serializeInternal(writer);
+		writer.write(primitiveType);
+		for(Object obj : values) {
+			writer.writePrimitive(primitiveType, obj, false);
+		}
 	}
 }

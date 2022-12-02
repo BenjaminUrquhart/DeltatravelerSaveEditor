@@ -6,6 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Serializer {
+	
+	public static byte[] serialize(StreamHeader header) {
+		Writer writer = new Writer();
+		writer.writeRecord(header);
+		writer.writeRecord(header.getRootObject());
+		
+		return writer.bytes();
+	}
 
 	public static byte[] serialize(String assemblyName, Object object) {
 		
@@ -82,7 +90,7 @@ public class Serializer {
 				obj = ((MemberReference)obj).getReference();
 				dirty = true;
 			}
-			if((obj instanceof BinaryObject) && ((BinaryObject)obj).type == RecordType.BinaryObjectString) {
+			if((obj instanceof BinaryObject) && ((BinaryObject)obj).getType() == RecordType.BinaryObjectString) {
 				obj = ((BinaryObject)obj).value;
 				dirty = true;
 			}

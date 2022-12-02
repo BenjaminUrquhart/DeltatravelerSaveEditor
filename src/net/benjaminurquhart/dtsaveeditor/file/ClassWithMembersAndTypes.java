@@ -10,14 +10,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import net.benjaminurquhart.dtsaveeditor.file.Deserializer.Reader;
 import sun.misc.Unsafe;
 
 public class ClassWithMembersAndTypes extends Record {
 	
 	private static final Unsafe unsafe;
 
-	
 	static {
 		unsafe = getUnsafe();
 	}
@@ -221,7 +219,7 @@ public class ClassWithMembersAndTypes extends Record {
 				value = ((BinaryObject)value).value;
 			}
 			if(value instanceof ArraySingle) {
-				value = ((Record)value).type == RecordType.ArraySinglePrimitive ? 
+				value = ((Record)value).getType() == RecordType.ArraySinglePrimitive ? 
 						this.convertToPrimitiveArray((ArraySinglePrimitive)value) : 
 						((ArraySingle)value).getValues();
 			}
@@ -322,5 +320,10 @@ public class ClassWithMembersAndTypes extends Record {
 		}
 		sb.append('}');
 		return sb.toString();
+	}
+
+	@Override
+	protected void serializeInternal(Writer writer) {
+		throw new UnsupportedOperationException();
 	}
 }

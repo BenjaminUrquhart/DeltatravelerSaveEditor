@@ -1,7 +1,5 @@
 package net.benjaminurquhart.dtsaveeditor.file;
 
-import net.benjaminurquhart.dtsaveeditor.file.Deserializer.Reader;
-
 public class ArraySingleObject extends ArraySingle {
 
 	public final Object[] values;
@@ -13,8 +11,8 @@ public class ArraySingleObject extends ArraySingle {
 		for(int i = 0; i < length; i++) {
 			record = reader.readRecord();
 			offsets[i] = record.offset;
-			if(record.type == RecordType.ObjectNull) {
-				for(int j = 0, count = ((ObjectNull)record).repeats; j < count; j++, i++) {
+			if(record instanceof ObjectNull nullObj) {
+				for(int j = 0; j < nullObj.repeats; j++, i++) {
 					offsets[i] = record.offset;
 					values[i] = null;
 				}
@@ -29,5 +27,22 @@ public class ArraySingleObject extends ArraySingle {
 	public Object[] getValues() {
 		return values;
 	}
-
+	
+	@Override
+	protected void serializeInternal(Writer writer) {
+		super.serializeInternal(writer);
+		
+		int nullCount = 0;
+		for(Object obj : values) {
+			if(obj == null) {
+				nullCount++;
+				continue;
+			}
+			else if(nullCount > 0) {
+				writer.writeNull(nullCount);
+				nullCount = 0;
+			}
+			writer.writeRecord((Record)obj);
+		}
+	}
 }

@@ -23,4 +23,9 @@ public class MemberReference extends Record {
 	public <T> T getReference(Class<T> clazz) {
 		return clazz.cast(reference);
 	}
+
+	@Override
+	protected void serializeInternal(Writer writer) {
+		writer.writeInt(refId);
+	}
 }

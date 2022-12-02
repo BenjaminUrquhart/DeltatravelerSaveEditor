@@ -16,4 +16,10 @@ public class BinaryLibrary extends Record {
 	protected void preProcess(Map<Integer, Record> objects) {
 		objects.put(libraryId, this);
 	}
+
+	@Override
+	protected void serializeInternal(Writer writer) {
+		writer.writeInt(libraryId)
+			  .writeString(libraryName);
+	}
 }

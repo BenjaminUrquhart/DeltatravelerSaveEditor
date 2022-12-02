@@ -1,4 +1,4 @@
-package net.benjaminurquhart.dtsaveeditor.file;
+ package net.benjaminurquhart.dtsaveeditor.file;
 
 import java.util.Map;
 
@@ -30,5 +30,13 @@ public class StreamHeader extends Record {
 			return clazz.cast(rootObject);
 		}
 		return ((ClassWithMembersAndTypes)rootObject).getAs(clazz);
+	}
+
+	@Override
+	protected void serializeInternal(Writer writer) {
+		writer.writeInt(rootId)
+			  .writeInt(headerId)
+			  .writeInt(majorVersion)
+			  .writeInt(minorVersion);
 	}
 }

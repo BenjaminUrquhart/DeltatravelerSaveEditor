@@ -1,7 +1,5 @@
 package net.benjaminurquhart.dtsaveeditor.file;
 
-import net.benjaminurquhart.dtsaveeditor.file.Deserializer.Reader;
-
 public class SystemClassWithMembersAndTypes extends ClassWithMembersAndTypes {
 
 	public SystemClassWithMembersAndTypes(Reader reader) {

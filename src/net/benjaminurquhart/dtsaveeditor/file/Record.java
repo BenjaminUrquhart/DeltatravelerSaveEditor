@@ -6,7 +6,7 @@ import java.util.Map;
 
 public abstract class Record {
 
-	public final RecordType type;
+	private final RecordType type;
 	public int offset = -1;
 	
 	public Record() {
@@ -29,6 +29,10 @@ public abstract class Record {
 		this.type = type;
 	}
 	
+	public RecordType getType() {
+		return type;
+	}
+	
 	protected void preProcess(Map<Integer, Record> objects) {
 		
 	}
@@ -39,6 +43,12 @@ public abstract class Record {
 		
 	}
 	
+	public final void serialize(Writer writer) {
+		writer.write(this.getType());
+		this.serializeInternal(writer);
+	}
+	protected abstract void serializeInternal(Writer writer);
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(type.name());
@@ -46,6 +56,9 @@ public abstract class Record {
 		
 		boolean space = false;
 		for(Field field : this.getClass().getDeclaredFields()) {
+			if(field.getName().startsWith("$SWITCH_TABLE$")) { // idk what this is
+				continue;
+			}
 			if(space) {
 				sb.append(", ");
 			}

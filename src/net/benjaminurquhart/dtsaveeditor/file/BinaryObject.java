@@ -19,4 +19,14 @@ public class BinaryObject extends Record {
 			objects.put(id, this);
 		}
 	}
+
+	@Override
+	protected void serializeInternal(Writer writer) {
+		writer.writeInt(id);
+		
+		switch(this.getType()) {
+		case BinaryObjectString: writer.writeString((String)value); break;
+		default: throw new UnsupportedOperationException("Cannot write BinaryObject of type " + this.getType());
+		}
+	}
 }

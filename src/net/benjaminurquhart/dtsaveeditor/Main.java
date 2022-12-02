@@ -1,6 +1,7 @@
 package net.benjaminurquhart.dtsaveeditor;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +15,23 @@ import net.benjaminurquhart.dtsaveeditor.file.Serializer;
 import net.benjaminurquhart.dtsaveeditor.file.StreamHeader;
 
 public class Main {
+	
+	public static boolean test = false;
+	
+	public static void test() throws Exception {
+		File test = new File("TEST.sav");
+		StreamHeader root = Deserializer.deserialize(new File("SAVE1.sav"));
+		Files.write(test.toPath(), Serializer.serialize(root));
+		
+		System.out.println(Deserializer.deserialize(test).getRootObject());
+	}
 
 	public static void main(String[] args) throws Exception {
+		if(test) {
+			test();
+			return;
+		}
+		
 		// Add conversion from C# Lists to Java Lists
 		ObjectMapper.setSystemObjectMapping("System.Collections.Generic.List", values -> {
 			List<Object> out = new ArrayList<>();
@@ -43,14 +59,12 @@ public class Main {
 		ArraySingleObject flags = ((MemberReference)rawRoot.values.get("flags")).getReference(ArraySingleObject.class);
 		
 		String field = "zone";
-		System.out.printf("%s offset is 0x%08x (value is %s)\n", field, rawRoot.offsets.get(field), rawRoot.values.get(field));
+		System.out.printf("%s offset is 0x%08x (value is %s) in %s\n", field, rawRoot.offsets.get(field), rawRoot.values.get(field), rawRoot.getClassName());
 		
 		int index = 0;
 		for(Object flag : flags.values) {
 			System.out.printf("%04d: %s\n", index, flag == null ? String.format("null @ 0x%08x", flags.offsets[index]) : flag);
 			index++;
 		}
-		
-		Serializer.serialize(rawRoot.getLibrary().libraryName, save);
 	}
 }

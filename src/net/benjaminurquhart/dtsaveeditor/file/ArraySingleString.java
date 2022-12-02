@@ -1,7 +1,5 @@
 package net.benjaminurquhart.dtsaveeditor.file;
 
-import net.benjaminurquhart.dtsaveeditor.file.Deserializer.Reader;
-
 public class ArraySingleString extends ArraySingle {
 
 	public final String[] values;
@@ -17,6 +15,13 @@ public class ArraySingleString extends ArraySingle {
 	@Override
 	public String[] getValues() {
 		return values;
+	}
+	@Override
+	public void serializeInternal(Writer writer) {
+		super.serializeInternal(writer);
+		for(String s : values) {
+			writer.writeString(s);
+		}
 	}
 
 }
